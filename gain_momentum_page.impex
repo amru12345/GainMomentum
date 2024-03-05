@@ -1,0 +1,37 @@
+
+$storeUid= glanbiaagri
+$contentCatalog=agriContentCatalog
+$productCatalog=agriProductCatalog
+$contentCatalogName=Glanbia Agri Content Catalog
+$productCatalogName=Glanbia Agri Product Catalog
+$catalog-id=$productCatalog
+$contentCV=catalogVersion(CatalogVersion.catalog(Catalog.id[default=$contentCatalog]),CatalogVersion.version[default=Online])[default=$contentCatalog:Online]
+
+INSERT_UPDATE CMSLinkComponent 	;$contentCV[unique=true];uid[unique=true]					;linkname					;name								;url									;restrictions(uid, $contentCV);
+                                  ;						;milk-info-link						;Milk						;Milk Page Link						;/my-account/milk-supplier-details		;myFarmNavNodeRestriction;
+                                  ;						;farm-management-documents-link		;Farm Documents				;Farm Documents	Page Link			;/my-account/farm-management-documents	;myFarmNavNodeRestriction;
+                                  ;						;export-farm-data					;Export Data for Farm Software;Export Data for Farm Software Page Link;/my-account/export-farmpackage	;tradingMyFarmNavNodeRestriction;
+                                  ;						;SustainabilityActionPaymentPageLink ; Sustainability Action Payment; Sustainability Action Payment Page Link ; /my-account/sustainability-action-payment ;myFarmNavNodeRestriction;
+                                  ;						;Gain-Momentum-Programme-Link					;Gain Momentum Programme					;Gain Momentum Programme Link	;/myaccount/gain-momentum-program-page; myFarmNavNodeRestriction;
+
+INSERT_UPDATE CMSNavigationNode	;uid[unique=true]		;$contentCV[unique=true];name							;parent(uid, $contentCV);links(uid,$contentCV) ;
+                                   ;myFarmNavNode			;						;My Farm Navigation Node		;root					;milk-info-link, farm-management-documents-link, export-farm-data,SustainabilityActionPaymentPageLink,Gain-Momentum-Programme-Link;
+
+INSERT_UPDATE GainMomentumComponent;$contentCV[unique=true];uid[unique=true];name;&componentRef;GainMomentumContent
+                                   ;;GainMomentumInfo1;Gain Momentum Info;GainMomentumInfo1;<h1>Gain Momentum Programme</h1> <p>TGainMomentumContenthe 'Gain Momentum Programme' has been developed to add tangible value, increase efficiency, environmental performance, and profitability on farm. </p>
+
+INSERT_UPDATE ContentSlot;$contentCV[unique=true];uid[unique=true];cmsComponents(&componentRef)
+                         ;;GainMomentumSlot1;GainMomentumInfo1;
+
+
+INSERT_UPDATE ContentSlotName;name[unique=true];template(uid,$contentCV)[unique=true][default='MyAccountNonDashBoardPageTemplate'];validComponentTypes(code);
+                             ;GainMomentSlotName;MyAccountNonDashBoardPageTemplate;;
+
+INSERT_UPDATE ContentSlotForPage;$contentCV[unique=true];uid[unique=true];position[unique=true];page(uid,$contentCV)[unique=true][default='gainmomentumtest1'];contentSlot(uid,$contentCV)[unique=true];;;
+                                ;;GainMomentumForPage;GainMomentSlotName;;GainMomentumSlot1
+
+INSERT_UPDATE ContentPage;uid[unique=true];approvalStatus(code,itemtype(code))[allownull=true];$contentCV[unique=true];copyToCatalogsDisabled[allownull=true];defaultPage[default='true'];description[lang=en];homepage[allownull=true];keywords[lang=en];label;lockedBy(uid);masterTemplate($contentCV,uid);name;navigationNodeList($contentCV,uid);onlyOneRestrictionMustApply[allownull=true];originalPage(catalogVersion(catalog(id),version),uid);owner(&Item)[allownull=true];previewImage(catalogVersion(catalog(id),version),code);title[lang=en];
+                         ;gainmomentumdemo;approved:CmsApprovalStatus;;false;true;;false;;/my-account/gain-momentum-program;;MyAccountNonDashBoardPageTemplate ;Gain Momentum programme;;true;;;;Gain Momentum Programme	;
+
+UPDATE ContentPage;uid[unique=true];approvalStatus(code,itemtype(code))[allownull=true];$contentCV[unique=true];copyToCatalogsDisabled[allownull=true];defaultPage[default='true'];description[lang=en];homepage[allownull=true];keywords[lang=en];label;lockedBy(uid);masterTemplate($contentCV,uid);name;navigationNodeList($contentCV,uid);onlyOneRestrictionMustApply[allownull=true];originalPage(catalogVersion(catalog(id),version),uid);owner(&Item)[allownull=true];previewImage(catalogVersion(catalog(id),version),code);title[lang=en];
+                  ;gainmomentumtest1;approved:CmsApprovalStatus;;false;true;;false;;/my-account/gain-momentum-program;;MyAccountNonDashBoardPageTemplate ;Gain Momentum programme;;true;;;;Gain Momentum Programme	;
